@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using EpubPreviewer;
+using SanderSade.EpubPreviewer.App;
 using SanderSade.EpubPreviewer.Epub;
-using SanderSade.EpubPreviewer.VersOne.Epub;
 
 namespace SanderSade.EpubPreviewer
 {
@@ -16,7 +14,6 @@ namespace SanderSade.EpubPreviewer
 		[STAThread]
 		private static void Main(params string[] files)
 		{
-			
 			Initialize();
 
 			if (files != null && files.Length > 0)
@@ -25,6 +22,10 @@ namespace SanderSade.EpubPreviewer
 				{
 					Previewer.Preview(file);
 				}
+
+				//run cleanup for old temp ebooks
+				Cleanup.Run(3);
+
 				return;
 			}
 
