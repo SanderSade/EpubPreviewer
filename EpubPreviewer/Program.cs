@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using EpubPreviewer;
 using SanderSade.EpubPreviewer.Epub;
+using SanderSade.EpubPreviewer.VersOne.Epub;
 
 namespace SanderSade.EpubPreviewer
 {
@@ -13,23 +16,21 @@ namespace SanderSade.EpubPreviewer
 		[STAThread]
 		private static void Main(params string[] files)
 		{
+			
 			Initialize();
 
 			if (files != null && files.Length > 0)
 			{
 				foreach (var file in files)
 				{
-					using (var previewer = new Previewer(file))
-					{
-						previewer.Preview();
-					}
+					Previewer.Preview(file);
 				}
 				return;
 			}
 
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			//Application.Run(new Form1());
+			Application.Run(new ConfigForm());
 		}
 
 		private static void Initialize()
