@@ -11,6 +11,7 @@
 	<div class="toc" id="toc">
 		<h1>{{title}}</h1>
 		<h2>{{author}}</h2>
+		{{calibrewarning}}
 		{{toc}}
 		<script>
 			var path = "{{path}}";
@@ -18,13 +19,13 @@
 			var elements = document.getElementsByTagName("a");
 			for (var i = 0; i < elements.length; i++) {
 				var element = elements[i];
-				
+
 				element.addEventListener("click",
 					function(event) {
 						event.preventDefault();
 						var file = "file://" + path + "/" + this.getAttribute("href");
 						document.getElementById("ifr").getAttributeNode("src").value = file;
-						
+
 						return false;
 					});
 			}

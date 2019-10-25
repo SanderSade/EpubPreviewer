@@ -9,10 +9,15 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Utils
 	{
 		public static XDocument LoadDocument(Stream stream)
 		{
-			return LoadXDocument(stream);
+			using (var ms = new MemoryStream())
+			{
+				stream.CopyTo(ms);
+				ms.Position = 0;
+				return LoadXDocument(ms);
+			}
 		}
 
-		private static XDocument LoadXDocument(Stream memoryStream)
+		private static XDocument LoadXDocument(MemoryStream memoryStream)
 		{
 			try
 			{

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using SanderSade.EpubPreviewer.VersOne.Epub.Entities;
 using SanderSade.EpubPreviewer.VersOne.Epub.RefEntities;
 
 namespace SanderSade.EpubPreviewer.Epub
@@ -67,7 +66,6 @@ namespace SanderSade.EpubPreviewer.Epub
 			{
 				if (string.IsNullOrWhiteSpace(item.Link.Anchor))
 					return item.Link.ContentFileName.TrimStart('/', '\\');
-
 				return $"{item.Link.ContentFileName.TrimStart('/', '\\')}#{item.Link.Anchor}";
 			}
 

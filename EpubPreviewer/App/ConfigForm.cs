@@ -24,7 +24,7 @@ namespace SanderSade.EpubPreviewer.App
 
 		private void lbLink_Click(object sender, EventArgs e)
 		{
-			
+
 			Process.Start("https://github.com/SanderSade/EpubPreviewer");
 		}
 
@@ -56,7 +56,15 @@ namespace SanderSade.EpubPreviewer.App
 				else
 				if (File.Exists(file))
 				{
-					Previewer.Preview(file);
+					try
+					{
+						Previewer.Preview(file);
+					}
+					catch (Exception ex)
+					{
+						MessageBox.Show($"Error opening file {file}, \r\n\r\n{ex}", "Error opening file", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					}
+
 				}
 
 			});

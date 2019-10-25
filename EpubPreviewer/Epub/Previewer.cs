@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Threading.Tasks;
 using SanderSade.EpubPreviewer.VersOne.Epub;
 
@@ -17,9 +18,11 @@ namespace SanderSade.EpubPreviewer.Epub
 			if (!File.Exists(file))
 				throw new FileNotFoundException($"File \"{file}\" does not exist!", file);
 
-			//Adding guid in the end in case a different version of this file has already been extracted
 			// ReSharper disable once AssignNullToNotNullAttribute
-			var outFolder = Path.Combine(Path.GetTempPath(), nameof(EpubPreviewer), Path.GetFileNameWithoutExtension(file), Guid.NewGuid().ToString("D"));
+			var cleaned = new string(Path.GetFileNameWithoutExtension(file).Where(char.IsLetterOrDigit).ToArray());
+
+			//Adding guid in the end in case a different version of this file has already been extracted
+			var outFolder = Path.Combine(Path.GetTempPath(), nameof(EpubPreviewer), cleaned, Guid.NewGuid().ToString("D"));
 			Directory.CreateDirectory(outFolder);
 
 #if DEBUG
@@ -42,9 +45,13 @@ namespace SanderSade.EpubPreviewer.Epub
 #if DEBUG
 				var sw = Stopwatch.StartNew();
 #endif
-				var epubBook = EpubReader.OpenBook(file);
-				var previewBuilder = new PreviewBuilder(epubBook, outFolder);
-				outFilePath = previewBuilder.Build();
+				using (var epubBook = EpubReader.OpenBook(file))
+				{
+					var previewBuilder = new PreviewBuilder(epubBook, outFolder);
+					outFilePath = previewBuilder.Build();
+				}
+
+
 #if DEBUG
 				timeSpan2 = sw.Elapsed;
 #endif
