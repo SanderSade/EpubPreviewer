@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO.Compression;
-using System.Threading.Tasks;
 using SanderSade.EpubPreviewer.VersOne.Epub.Entities;
 using SanderSade.EpubPreviewer.VersOne.Epub.Readers;
 
@@ -11,11 +10,13 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.RefEntities
 	{
 		private bool _isDisposed;
 
+
 		public EpubBookRef(ZipArchive epubArchive)
 		{
 			EpubArchive = epubArchive;
 			_isDisposed = false;
 		}
+
 
 		public string FilePath { get; set; }
 		public string Title { get; set; }
@@ -26,11 +27,13 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.RefEntities
 
 		internal ZipArchive EpubArchive { get; }
 
+
 		public void Dispose()
 		{
 			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
+
 
 		~EpubBookRef()
 		{
@@ -38,8 +41,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.RefEntities
 		}
 
 
-
-		
 		public List<EpubTextContentFileRef> GetReadingOrder()
 		{
 			return SpineReader.GetReadingOrder(this);
@@ -50,6 +51,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.RefEntities
 		{
 			return NavigationReader.GetNavigationItems(this);
 		}
+
 
 		protected virtual void Dispose(bool disposing)
 		{

@@ -13,7 +13,10 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			foreach (var spineItemRef in bookRef.Schema.Package.Spine)
 			{
 				var manifestItem = bookRef.Schema.Package.Manifest.FirstOrDefault(item => item.Id == spineItemRef.IdRef);
-				if (manifestItem == null) throw new Exception($"Incorrect EPUB spine: item with IdRef = \"{spineItemRef.IdRef}\" is missing in the manifest.");
+				if (manifestItem == null
+				) //throw new Exception($"Incorrect EPUB spine: item with IdRef = \"{spineItemRef.IdRef}\" is missing in the manifest.");
+					continue;
+
 				if (bookRef.Content.Html.TryGetValue(manifestItem.Href, out var htmlContentFileRef))
 				{
 					result.Add(htmlContentFileRef);
@@ -24,6 +27,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 				// thus, if the first attempt to get the HTML item fails, we try for a second item with the same Id
 				manifestItem = bookRef.Schema.Package.Manifest.Where(item => item.Id == spineItemRef.IdRef).Skip(1).FirstOrDefault();
 				if (manifestItem == null) throw new Exception($"Incorrect EPUB spine: item with IdRef = \"{spineItemRef.IdRef}\" is not HTML content");
+
 				if (bookRef.Content.Html.TryGetValue(manifestItem.Href, out var htmlContentFileRef2))
 				{
 					result.Add(htmlContentFileRef2);

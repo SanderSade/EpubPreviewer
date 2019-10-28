@@ -27,6 +27,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 						{
 							FileName = fileName, ContentMimeType = contentMimeType, ContentType = contentType
 						};
+
 						if (contentType == EpubContentType.Xhtml11) result.Html[fileName] = epubTextContentFile;
 
 						break;
@@ -35,6 +36,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 
 			return result;
 		}
+
 
 		private static EpubContentType GetContentTypeByContentMimeType(string contentMimeType)
 		{

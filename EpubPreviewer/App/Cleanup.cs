@@ -16,7 +16,7 @@ namespace SanderSade.EpubPreviewer.App
 				var age = Directory.GetCreationTimeUtc(path);
 
 				if (now - age > fromDays)
-						Directory.Delete(path, true);
+					Directory.Delete(path, true);
 			}
 		}
 	}

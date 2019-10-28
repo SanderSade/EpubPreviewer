@@ -9,21 +9,25 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Entities
 			Type = type;
 		}
 
+
 		public EpubNavigationItemType Type { get; }
 		public string Title { get; set; }
 		public EpubNavigationItemLink Link { get; set; }
 		public EpubTextContentFile HtmlContentFile { get; set; }
 		public List<EpubNavigationItem> NestedItems { get; set; }
 
+
 		public static EpubNavigationItem CreateAsHeader()
 		{
 			return new EpubNavigationItem(EpubNavigationItemType.Header);
 		}
 
+
 		public static EpubNavigationItem CreateAsLink()
 		{
 			return new EpubNavigationItem(EpubNavigationItemType.Link);
 		}
+
 
 		public override string ToString()
 		{

@@ -8,12 +8,14 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Entities
 		{
 		}
 
+
 		public EpubNavigationItemLink(string url)
 		{
 			var urlParser = new UrlParser(url);
 			ContentFileName = urlParser.Path;
 			Anchor = urlParser.Anchor;
 		}
+
 
 		public string ContentFileName { get; set; }
 		public string Anchor { get; set; }

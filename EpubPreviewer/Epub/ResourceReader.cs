@@ -7,8 +7,9 @@ namespace SanderSade.EpubPreviewer.Epub
 	internal static class ResourceReader
 	{
 		/// <summary>
-		/// Read embedded resource
+		///     Read embedded resource
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
 		internal static string Read(string name)
 		{
 			var assembly = Assembly.GetExecutingAssembly();

@@ -14,6 +14,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Schema.Opf
 		public string FallbackStyle { get; set; }
 		public List<ManifestProperty> Properties { get; set; }
 
+
 		public override string ToString()
 		{
 			return $"Id: {Id}, Href = {Href}, MediaType = {MediaType}";

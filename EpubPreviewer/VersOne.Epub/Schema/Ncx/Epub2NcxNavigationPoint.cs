@@ -11,6 +11,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Schema.Ncx
 		public Epub2NcxContent Content { get; set; }
 		public List<Epub2NcxNavigationPoint> ChildNavigationPoints { get; set; }
 
+
 		public override string ToString()
 		{
 			return $"Id: {Id}, Content.Source: {Content.Source}";

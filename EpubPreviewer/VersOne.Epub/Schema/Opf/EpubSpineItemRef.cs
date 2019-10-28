@@ -10,6 +10,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Schema.Opf
 		public bool IsLinear { get; set; }
 		public List<SpineProperty> Properties { get; set; }
 
+
 		public override string ToString()
 		{
 			var resultBuilder = new StringBuilder();

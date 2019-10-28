@@ -36,9 +36,9 @@ namespace SanderSade.EpubPreviewer.App
 			this.btDeleteTemporary = new System.Windows.Forms.Button();
 			this.lbLink = new System.Windows.Forms.Label();
 			this.SuspendLayout();
-			// 
+			//
 			// label2
-			// 
+			//
 			this.label2.Dock = System.Windows.Forms.DockStyle.Top;
 			this.label2.Font = new System.Drawing.Font("Calibri", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.label2.Location = new System.Drawing.Point(0, 0);
@@ -49,9 +49,9 @@ namespace SanderSade.EpubPreviewer.App
 			this.label2.TabIndex = 1;
 			this.label2.Text = ".epub previewer";
 			this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
+			//
 			// label1
-			// 
+			//
 			this.label1.Dock = System.Windows.Forms.DockStyle.Top;
 			this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.label1.Location = new System.Drawing.Point(0, 60);
@@ -61,9 +61,9 @@ namespace SanderSade.EpubPreviewer.App
 			this.label1.Size = new System.Drawing.Size(652, 198);
 			this.label1.TabIndex = 2;
 			this.label1.Text = resources.GetString("label1.Text");
-			// 
+			//
 			// btDeleteTemporary
-			// 
+			//
 			this.btDeleteTemporary.Dock = System.Windows.Forms.DockStyle.Top;
 			this.btDeleteTemporary.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.btDeleteTemporary.Location = new System.Drawing.Point(0, 258);
@@ -74,9 +74,9 @@ namespace SanderSade.EpubPreviewer.App
 			this.btDeleteTemporary.Text = "Delete all temporary EpubPreviewer files";
 			this.btDeleteTemporary.UseVisualStyleBackColor = true;
 			this.btDeleteTemporary.Click += new System.EventHandler(this.btDeleteTemporary_Click);
-			// 
+			//
 			// lbLink
-			// 
+			//
 			this.lbLink.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.lbLink.Dock = System.Windows.Forms.DockStyle.Bottom;
 			this.lbLink.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -88,9 +88,9 @@ namespace SanderSade.EpubPreviewer.App
 			this.lbLink.Text = "https://github.com/SanderSade/EpubPreviewer";
 			this.lbLink.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.lbLink.Click += new System.EventHandler(this.lbLink_Click);
-			// 
+			//
 			// ConfigForm
-			// 
+			//
 			this.AllowDrop = true;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;

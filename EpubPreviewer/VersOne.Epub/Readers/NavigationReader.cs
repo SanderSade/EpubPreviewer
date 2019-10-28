@@ -17,26 +17,31 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			{
 				if (null != bookRef.Schema.Epub2Ncx)
 					return GetNavigationItems(bookRef, bookRef.Schema.Epub2Ncx);
+
 				return new List<EpubNavigationItemRef>(); // if Ncx is missing, return an empty list
 			}
 
 			return GetNavigationItems(bookRef, bookRef.Schema.Epub3NavDocument);
 		}
 
+
 		public static List<EpubNavigationItemRef> GetNavigationItems(EpubBookRef bookRef, Epub2Ncx epub2Ncx)
 		{
 			return GetNavigationItems(bookRef, epub2Ncx.NavMap);
 		}
+
 
 		public static List<EpubNavigationItemRef> GetNavigationItems(EpubBookRef bookRef, Epub3NavDocument epub3NavDocument)
 		{
 			return GetNavigationItems(bookRef, epub3NavDocument.Navs.FirstOrDefault(nav => nav.Type == StructuralSemanticsProperty.Toc));
 		}
 
+
 		private static List<EpubNavigationItemRef> GetNavigationItems(EpubBookRef bookRef, List<Epub2NcxNavigationPoint> navigationPoints)
 		{
 			var result = new List<EpubNavigationItemRef>();
 			if (navigationPoints != null)
+			{
 				foreach (var navigationPoint in navigationPoints)
 				{
 					var navigationItemRef = EpubNavigationItemRef.CreateAsLink();
@@ -46,9 +51,11 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 					navigationItemRef.NestedItems = GetNavigationItems(bookRef, navigationPoint.ChildNavigationPoints);
 					result.Add(navigationItemRef);
 				}
+			}
 
 			return result;
 		}
+
 
 		private static List<EpubNavigationItemRef> GetNavigationItems(EpubBookRef bookRef, Epub3Nav epub3Nav)
 		{
@@ -64,23 +71,22 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 					result.Add(navigationItemRef);
 				}
 				else
-				{
 					result = GetNavigationItems(bookRef, epub3Nav.Ol);
-				}
 			}
 			else
-			{
 				result = new List<EpubNavigationItemRef>();
-			}
 
 			return result;
 		}
+
 
 		private static List<EpubNavigationItemRef> GetNavigationItems(EpubBookRef bookRef, Epub3NavOl epub3NavOl)
 		{
 			var result = new List<EpubNavigationItemRef>();
 			if (epub3NavOl != null && epub3NavOl.Lis != null)
+			{
 				foreach (var epub3NavLi in epub3NavOl.Lis)
+				{
 					if (epub3NavLi != null && (epub3NavLi.Anchor != null || epub3NavLi.Span != null))
 					{
 						if (epub3NavLi.Anchor != null)
@@ -102,22 +108,30 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 							result.Add(navigationItemRef);
 						}
 					}
+				}
+			}
 
 			return result;
 		}
+
 
 		private static EpubTextContentFileRef GetHtmlContentFileRef(EpubBookRef bookRef, string contentFileName)
 		{
 			if (contentFileName == null) return null;
 			if (!bookRef.Content.Html.TryGetValue(contentFileName, out var htmlContentFileRef)) return null;
+
 			return htmlContentFileRef;
 		}
+
 
 		private static string GetFirstNonEmptyHeader(params string[] options)
 		{
 			foreach (var option in options)
+			{
 				if (!string.IsNullOrEmpty(option))
 					return option;
+			}
+
 			return string.Empty;
 		}
 	}

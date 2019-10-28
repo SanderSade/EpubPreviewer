@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using SanderSade.EpubPreviewer.VersOne.Epub.RefEntities;
 
 namespace SanderSade.EpubPreviewer.Epub
@@ -17,6 +16,7 @@ namespace SanderSade.EpubPreviewer.Epub
 			_outFolder = outFolder;
 		}
 
+
 		public string Build()
 		{
 			var tocBuilder = new TocBuilder(_ebook);
@@ -26,10 +26,6 @@ namespace SanderSade.EpubPreviewer.Epub
 			html = html.Replace("{{title}}", _ebook.Title);
 			html = html.Replace("{{author}}", _ebook.Author);
 
-			//Calibre creates weird epubs with noncompliant toc/structure
-			html = html.Replace("{{calibrewarning}}",
-				DetectCalibre()
-					? "<p id='calibre'>Epub is probably created with Calibre. Table of contents and preview may be inaccurate</p>" : string.Empty);
 
 			html = html.Replace("{{toc}}", toc);
 			var path = Path.Combine(_outFolder, _ebook.Schema.ContentDirectoryPath).Replace("\\", "\\\\");
@@ -46,20 +42,6 @@ namespace SanderSade.EpubPreviewer.Epub
 				File.Copy(customCssPath, Path.Combine(_outFolder, "EpubPreviewer.css"));
 
 			return htmlPath;
-		}
-
-		private bool DetectCalibre()
-		{
-			//check "calibrebookmarks" file
-			var isCalibre = _ebook.EpubArchive.Entries.Any(x => x.Name.IndexOf("calibre", StringComparison.OrdinalIgnoreCase) >= 0);
-			if (!isCalibre)
-			{
-				using(var  streamReader = new StreamReader(_ebook.EpubArchive.Entries.First(x => x.Name.EndsWith(".opf")).Open()))
-				{
-					isCalibre = streamReader.ReadToEnd().IndexOf("calibre", StringComparison.OrdinalIgnoreCase) >= 0;
-				}
-			}
-			return isCalibre;
 		}
 	}
 }

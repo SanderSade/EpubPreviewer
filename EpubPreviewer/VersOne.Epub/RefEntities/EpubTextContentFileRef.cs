@@ -9,10 +9,12 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.RefEntities
 		{
 		}
 
+
 		public string ReadContent()
 		{
 			return ReadContentAsText();
 		}
+
 
 		public Task<string> ReadContentAsync()
 		{

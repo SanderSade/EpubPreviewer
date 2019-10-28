@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO.Compression;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using SanderSade.EpubPreviewer.VersOne.Epub.Schema.Common;
 using SanderSade.EpubPreviewer.VersOne.Epub.Schema.Opf;
@@ -18,10 +17,12 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			var result = new Epub3NavDocument();
 			var navManifestItem =
 				package.Manifest.FirstOrDefault(item => item.Properties != null && item.Properties.Contains(ManifestProperty.Nav));
+
 			if (navManifestItem == null)
 			{
 				if (package.EpubVersion == EpubVersion.Epub2)
 					return null;
+
 				throw new Exception("EPUB parsing error: NAV item not found in EPUB manifest.");
 			}
 
@@ -29,6 +30,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			var navFileEntry = epubArchive.GetEntry(navFileEntryPath);
 			if (navFileEntry == null) throw new Exception($"EPUB parsing error: navigation file {navFileEntryPath} not found in archive.");
 			if (navFileEntry.Length > int.MaxValue) throw new Exception($"EPUB parsing error: navigation file {navFileEntryPath} is larger than 2 Gb.");
+
 			XDocument navDocument;
 			using (var containerStream = navFileEntry.Open())
 			{
@@ -38,6 +40,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			var xhtmlNamespace = navDocument.Root.Name.Namespace;
 			var htmlNode = navDocument.Element(xhtmlNamespace + "html");
 			if (htmlNode == null) throw new Exception("EPUB parsing error: navigation file does not contain html element.");
+
 			var bodyNode = htmlNode.Element(xhtmlNamespace + "body");
 			if (bodyNode == null) throw new Exception("EPUB parsing error: navigation file does not contain body element.");
 
@@ -54,6 +57,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			return result;
 		}
 
+
 		private static void AdjustRelativePath(Epub3NavOl nav, string rootFolder)
 		{
 			if (nav == null) return;
@@ -69,6 +73,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 				AdjustRelativePath(li.ChildOl, rootFolder);
 			}
 		}
+
 
 		private static Epub3Nav ReadEpub3Nav(XElement navNode)
 		{
@@ -88,6 +93,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			}
 
 			foreach (var navChildNode in navNode.Elements())
+			{
 				switch (navChildNode.GetLowerCaseLocalName())
 				{
 					case "h1":
@@ -103,9 +109,11 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 						epub3Nav.Ol = epub3NavOl;
 						break;
 				}
+			}
 
 			return epub3Nav;
 		}
+
 
 		private static Epub3NavOl ReadEpub3NavOl(XElement epub3NavOlNode)
 		{
@@ -123,6 +131,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 
 			epub3NavOl.Lis = new List<Epub3NavLi>();
 			foreach (var navOlChildNode in epub3NavOlNode.Elements())
+			{
 				switch (navOlChildNode.GetLowerCaseLocalName())
 				{
 					case "li":
@@ -130,14 +139,17 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 						epub3NavOl.Lis.Add(epub3NavLi);
 						break;
 				}
+			}
 
 			return epub3NavOl;
 		}
+
 
 		private static Epub3NavLi ReadEpub3NavLi(XElement epub3NavLiNode)
 		{
 			var epub3NavLi = new Epub3NavLi();
 			foreach (var navLiChildNode in epub3NavLiNode.Elements())
+			{
 				switch (navLiChildNode.GetLowerCaseLocalName())
 				{
 					case "a":
@@ -153,9 +165,11 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 						epub3NavLi.ChildOl = epub3NavOl;
 						break;
 				}
+			}
 
 			return epub3NavLi;
 		}
+
 
 		private static Epub3NavAnchor ReadEpub3NavAnchor(XElement epub3NavAnchorNode)
 		{
@@ -183,6 +197,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			epub3NavAnchor.Text = epub3NavAnchorNode.Value.Trim();
 			return epub3NavAnchor;
 		}
+
 
 		private static Epub3NavSpan ReadEpub3NavSpan(XElement epub3NavSpanNode)
 		{

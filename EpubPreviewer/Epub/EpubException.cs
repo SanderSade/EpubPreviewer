@@ -2,11 +2,11 @@
 
 namespace SanderSade.EpubPreviewer.Epub
 {
-	internal sealed class EpubException: Exception
+	[Serializable]
+	internal sealed class EpubException : Exception
 	{
-		internal EpubException(string message): base(message)
+		internal EpubException(string message) : base(message)
 		{
-			
 		}
 	}
 }

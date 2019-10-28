@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
@@ -15,6 +14,7 @@ namespace SanderSade.EpubPreviewer.App
 			InitializeComponent();
 		}
 
+
 		private void btDeleteTemporary_Click(object sender, EventArgs e)
 		{
 			Cursor = Cursors.WaitCursor;
@@ -22,11 +22,12 @@ namespace SanderSade.EpubPreviewer.App
 			Cursor = Cursors.Arrow;
 		}
 
+
 		private void lbLink_Click(object sender, EventArgs e)
 		{
-
 			Process.Start("https://github.com/SanderSade/EpubPreviewer");
 		}
+
 
 		private void ConfigForm_DragEnter(object sender, DragEventArgs e)
 		{
@@ -34,17 +35,19 @@ namespace SanderSade.EpubPreviewer.App
 				e.Effect = DragDropEffects.Copy;
 		}
 
+
 		private void ConfigForm_DragDrop(object sender, DragEventArgs e)
 		{
 			var files = (string[])e.Data.GetData(DataFormats.FileDrop);
 			Cursor = Cursors.WaitCursor;
-			var parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount };
+			var parallelOptions = new ParallelOptions {MaxDegreeOfParallelism = Environment.ProcessorCount};
 			RunPreview(files, parallelOptions);
 
 			Cursor = Cursors.Arrow;
 		}
 
-		private static void RunPreview(string[] files, ParallelOptions parallelOptions)
+
+		private void RunPreview(string[] files, ParallelOptions parallelOptions)
 		{
 			Parallel.ForEach(files, parallelOptions, file =>
 			{
@@ -53,8 +56,7 @@ namespace SanderSade.EpubPreviewer.App
 					var epubs = Directory.GetFiles(file, "*.epub", SearchOption.AllDirectories);
 					RunPreview(epubs, parallelOptions);
 				}
-				else
-				if (File.Exists(file))
+				else if (File.Exists(file))
 				{
 					try
 					{
@@ -64,9 +66,7 @@ namespace SanderSade.EpubPreviewer.App
 					{
 						MessageBox.Show($"Error opening file {file}, \r\n\r\n{ex}", "Error opening file", MessageBoxButtons.OK, MessageBoxIcon.Error);
 					}
-
 				}
-
 			});
 		}
 	}

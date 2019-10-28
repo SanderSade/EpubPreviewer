@@ -40,6 +40,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub
 			return OpenBook(GetZipArchive(filePath));
 		}
 
+
 		/// <summary>
 		///     Opens the book asynchronously without reading its whole content.
 		/// </summary>
@@ -49,6 +50,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub
 		{
 			return OpenBook(GetZipArchive(stream));
 		}
+
 
 		/// <summary>
 		///     Opens the book synchronously and reads all of its content into the memory. Does not hold the handle to the EPUB
@@ -96,6 +98,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub
 			}
 		}
 
+
 		private static EpubBook ReadBook(EpubBookRef epubBookRef)
 		{
 			var result = new EpubBook();
@@ -117,20 +120,24 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub
 			return result;
 		}
 
+
 		private static ZipArchive GetZipArchive(string filePath)
 		{
 			return ZipFile.OpenRead(filePath);
 		}
+
 
 		private static ZipArchive GetZipArchive(Stream stream)
 		{
 			return new ZipArchive(stream, ZipArchiveMode.Read);
 		}
 
+
 		private static EpubContent ReadContent(EpubContentRef contentRef)
 		{
 			return new EpubContent {Html = ReadTextContentFiles(contentRef.Html)};
 		}
+
 
 		private static Dictionary<string, EpubTextContentFile> ReadTextContentFiles(Dictionary<string, EpubTextContentFileRef> textContentFileRefs)
 		{
@@ -143,6 +150,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub
 					ContentType = textContentFileRef.Value.ContentType,
 					ContentMimeType = textContentFileRef.Value.ContentMimeType
 				};
+
 				//		textContentFile.Content = await textContentFileRef.Value.ReadContentAsTextAsync().ConfigureAwait(false);
 				result.Add(textContentFileRef.Key, textContentFile);
 			}
@@ -156,6 +164,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub
 			return htmlContentFileRefs.Select(htmlContentFileRef => epubBook.Content.Html[htmlContentFileRef.FileName]).ToList();
 		}
 
+
 		private static List<EpubNavigationItem> ReadNavigation(EpubBook epubBook, List<EpubNavigationItemRef> navigationItemRefs)
 		{
 			var result = new List<EpubNavigationItem>();
@@ -164,6 +173,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub
 				var navigationItem = new EpubNavigationItem(navigationItemRef.Type) {Title = navigationItemRef.Title, Link = navigationItemRef.Link};
 				if (navigationItemRef.HtmlContentFileRef != null)
 					navigationItem.HtmlContentFile = epubBook.Content.Html[navigationItemRef.HtmlContentFileRef.FileName];
+
 				navigationItem.NestedItems = ReadNavigation(epubBook, navigationItemRef.NestedItems);
 				result.Add(navigationItem);
 			}

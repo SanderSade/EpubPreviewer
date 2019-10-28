@@ -16,6 +16,7 @@ namespace SanderSade.EpubPreviewer
 		{
 			Initialize();
 
+
 			if (files != null && files.Length > 0)
 			{
 				foreach (var file in files)
@@ -34,6 +35,7 @@ namespace SanderSade.EpubPreviewer
 			Application.Run(new ConfigForm());
 		}
 
+
 		private static void Initialize()
 		{
 			Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
@@ -49,14 +51,17 @@ namespace SanderSade.EpubPreviewer
 			{
 				LogUnhandledException(args.Exception,
 					$"Uncaught task exception: {sender}");
+
 				args.SetObserved();
 			};
 		}
+
 
 		private static void LogUnhandledException(Exception ex, string message)
 		{
 			MessageBox.Show($"Fatal error. {message}\r\n\r\n{ex}",
 				"Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
 			Environment.Exit(1);
 		}
 	}

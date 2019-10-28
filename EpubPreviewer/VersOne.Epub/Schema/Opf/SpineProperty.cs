@@ -19,6 +19,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Schema.Opf
 				.ToList();
 		}
 
+
 		public static SpineProperty ParseProperty(string stringValue)
 		{
 			switch (stringValue.ToLowerInvariant())

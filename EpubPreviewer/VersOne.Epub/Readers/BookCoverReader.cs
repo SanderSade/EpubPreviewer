@@ -13,8 +13,10 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 		{
 			var metaItems = epubSchema.Package.Metadata.MetaItems;
 			if (metaItems == null || !metaItems.Any()) return null;
+
 			var coverMetaItem = metaItems.FirstOrDefault(metaItem => metaItem.Name.CompareOrdinalIgnoreCase("cover"));
 			if (coverMetaItem == null) return null;
+
 			if (string.IsNullOrEmpty(coverMetaItem.Content)) throw new Exception("Incorrect EPUB metadata: cover item content is missing.");
 
 			EpubByteContentFileRef coverImageContentFileRef;
@@ -29,6 +31,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 				// thus we test if there is a second item, and whether that is an image....
 				coverManifestItem = epubSchema.Package.Manifest.Where(manifestItem => manifestItem.Id.CompareOrdinalIgnoreCase(coverMetaItem.Content)).Skip(1)
 					.FirstOrDefault();
+
 				;
 				if (null != coverManifestItem?.Href && imageContentRefs.TryGetValue(coverManifestItem.Href, out coverImageContentFileRef))
 					return coverImageContentFileRef;
@@ -39,10 +42,12 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			coverManifestItem = epubSchema.Package.Manifest.FirstOrDefault(manifestItem => manifestItem.Href.CompareOrdinalIgnoreCase(coverMetaItem.Content));
 			if (null != coverManifestItem?.Href && imageContentRefs.TryGetValue(coverManifestItem.Href, out coverImageContentFileRef))
 				return coverImageContentFileRef;
+
 			// 2019-08-24 if it is still not found, then try to find an Id named cover
 			coverManifestItem = epubSchema.Package.Manifest.FirstOrDefault(manifestItem => manifestItem.Id.CompareOrdinalIgnoreCase(coverMetaItem.Name));
 			if (null != coverManifestItem?.Href && imageContentRefs.TryGetValue(coverManifestItem.Href, out coverImageContentFileRef))
 				return coverImageContentFileRef;
+
 			// 2019-08-24 if it is still not found, then try to find it in the guide
 			var guideItem = epubSchema.Package.Guide.FirstOrDefault(reference => reference.Title.CompareOrdinalIgnoreCase(coverMetaItem.Name));
 			if (null != guideItem?.Href && imageContentRefs.TryGetValue(guideItem.Href, out coverImageContentFileRef)) return coverImageContentFileRef;

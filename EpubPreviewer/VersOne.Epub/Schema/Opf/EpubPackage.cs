@@ -10,6 +10,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Schema.Opf
 		public EpubSpine Spine { get; set; }
 		public EpubGuide Guide { get; set; }
 
+
 		public string GetVersionString()
 		{
 			return VersionUtils.GetVersionString(EpubVersion);
