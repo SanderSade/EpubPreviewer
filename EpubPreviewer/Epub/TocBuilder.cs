@@ -98,27 +98,27 @@ namespace SanderSade.EpubPreviewer.Epub
 					break;
 
 				case 0: //entry is where we expected
-				{
-					readingFiles.RemoveAt(0);
-					BuidNavigation(item);
-					break;
-				}
-				default: //extra entries in the reading order, add to previous entry as subentries
-				{
-					readingFiles.RemoveAt(readingFile);
-					_sb.AppendLine("<ul>");
-					for (var i = 0; i < readingFile; i++)
 					{
-						var contentFile = readingFiles[i];
-						if (_ebook.Content.Html.Values.Any(x => x.FileName == contentFile))
-							_sb.AppendLine($"<li><a href=\"{contentFile}\">{contentFile}</a></li>");
+						readingFiles.RemoveAt(0);
+						BuidNavigation(item);
+						break;
 					}
+				default: //extra entries in the reading order, add to previous entry as subentries
+					{
+						readingFiles.RemoveAt(readingFile);
+						_sb.AppendLine("<ul>");
+						for (var i = 0; i < readingFile; i++)
+						{
+							var contentFile = readingFiles[i];
+							if (_ebook.Content.Html.Values.Any(x => x.FileName == contentFile))
+								_sb.AppendLine($"<li><a href=\"{contentFile}\">{contentFile}</a></li>");
+						}
 
-					_sb.AppendLine("</ul>");
-					readingFiles.RemoveRange(0, readingFile);
-					BuidNavigation(item);
-					break;
-				}
+						_sb.AppendLine("</ul>");
+						readingFiles.RemoveRange(0, readingFile);
+						BuidNavigation(item);
+						break;
+					}
 			}
 		}
 
@@ -185,9 +185,16 @@ namespace SanderSade.EpubPreviewer.Epub
 			{
 				if (item.Link != null && !string.IsNullOrWhiteSpace(item.Link.ContentFileName))
 				{
-					_sb.AppendLine($"<li><a href=\"{BuildContentLink()}\">{item.Title}</a></li>");
+					var buildContentLink = BuildContentLink();
 					if (FirstLink == null)
-						FirstLink = BuildContentLink();
+					{
+						FirstLink = buildContentLink;
+						_sb.AppendLine($"<li><a href=\"{buildContentLink}\" class=\"highlight\">{item.Title}</a></li>");
+
+					}
+					else
+						_sb.AppendLine($"<li><a href=\"{buildContentLink}\">{item.Title}</a></li>");
+
 				}
 				else
 					_sb.AppendLine($"<li><h3>{item.Title}</h3></li>");

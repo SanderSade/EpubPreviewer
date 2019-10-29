@@ -25,6 +25,13 @@
 						var file = "file://" + path + "/" + this.getAttribute("href");
 						document.getElementById("ifr").getAttributeNode("src").value = file;
 
+						var hl = document.getElementsByClassName("highlight");
+						while(hl.length > 0){
+							hl[0].classList.remove("highlight");
+						}
+
+						this.classList.add("highlight");
+
 						return false;
 					});
 			}

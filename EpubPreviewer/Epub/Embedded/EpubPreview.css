@@ -30,7 +30,7 @@ body {
 .toc ol { direction: ltr; }
 
 .toc a, .toc a:visited {
-	color: #8e0012;
+	color: rgb(142, 0, 18);
 	font-size: larger;
 	text-decoration: none;
 }
@@ -42,14 +42,22 @@ body {
 	text-decoration: underline;
 }
 
+	.toc a.highlight {
+		color: #8e0012;
+		color: rgba(142, 0, 18, 0.6);
+		outline: 2px groove #8e0012;
+		outline: 2px groove rgba(142, 0, 18, 0.01);
+		background-color: ivory;
+	}
+
 
 .toc h2 {
-	color: #8e0012;
-	font-family: sans-serif;
-	font-size: 1.3em;
-	font-weight: bold;
-	margin: 15px 0 8px 0 !important;
-}
+		color: #8e0012;
+		font-family: sans-serif;
+		font-size: 1.3em;
+		font-weight: bold;
+		margin: 15px 0 8px 0 !important;
+	}
 
 .toc h3 {
 	color: #523438;
