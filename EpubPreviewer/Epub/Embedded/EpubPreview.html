@@ -1,16 +1,19 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8"/>
+	<meta charset="utf-8" />
 	<title>{{title}}</title>
-	<link href="EpubPreview.css" rel="stylesheet"/>
-	<link href="EpubPreviewer.css" rel="stylesheet"/>
+	<link href="EpubPreview.css" rel="stylesheet" />
+	<link href="EpubPreviewer.css" rel="stylesheet" />
 </head>
 <body>
+<div id="fileName">{{filename}}</div>
 <div class="container">
 	<div class="toc" id="toc">
-		<h1>{{title}}</h1>
-		<h2>{{author}}</h2>
+		<span id="copyFilename" title="{{filename}}" onclick="CopyToClipboard('fileName')">Create &amp; copy filename</span>
+
+		<h1 id="title">{{title}}&nbsp;<span class="copy" title="Copy to clipboard" onclick="CopyToClipboard('title')">&nbsp;</span></h1>
+		<h2 id="author">{{author}}&nbsp;<span class="copy" title="Copy to clipboard" onclick="CopyToClipboard('author')">&nbsp;</span></h2>
 		{{toc}}
 		<script>
 			var path = "{{path}}";
@@ -26,7 +29,7 @@
 						document.getElementById("ifr").getAttributeNode("src").value = file;
 
 						var hl = document.getElementsByClassName("highlight");
-						while(hl.length > 0){
+						while (hl.length > 0) {
 							hl[0].classList.remove("highlight");
 						}
 
@@ -34,11 +37,23 @@
 
 						return false;
 					});
+			};
+
+
+			function CopyToClipboard(containerid) {
+				var textarea = document.createElement('textarea');
+				textarea.id = 'temp_element';
+				textarea.style.height = 0;
+				document.body.appendChild(textarea);
+				textarea.value = document.getElementById(containerid).innerText;
+				document.querySelector('#temp_element').select();
+				document.execCommand('copy');
+				document.body.removeChild(textarea);
 			}
 		</script>
 	</div>
 	<div class="frame">
-		<iframe src="{{framesrc}}" scrolling="auto", marginheight="10" marginwidth="10" id="ifr"></iframe>
+		<iframe src="{{framesrc}}" scrolling="auto" marginheight="10" marginwidth="10" id="ifr"></iframe>
 	</div>
 </div>
 </body>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using SanderSade.EpubPreviewer.VersOne.Epub.RefEntities;
 
 namespace SanderSade.EpubPreviewer.Epub
@@ -25,7 +26,7 @@ namespace SanderSade.EpubPreviewer.Epub
 			var html = ResourceReader.Read("EpubPreview.html");
 			html = html.Replace("{{title}}", _ebook.Title);
 			html = html.Replace("{{author}}", _ebook.Author);
-
+			html = html.Replace("{{filename}}", BuildFilename());
 
 			html = html.Replace("{{toc}}", toc);
 			var path = Path.Combine(_outFolder, _ebook.Schema.ContentDirectoryPath).Replace("\\", "\\\\");
@@ -42,6 +43,18 @@ namespace SanderSade.EpubPreviewer.Epub
 				File.Copy(customCssPath, Path.Combine(_outFolder, "EpubPreviewer.css"));
 
 			return htmlPath;
+		}
+
+		/// <summary>
+		/// Build filename in form "autor - title.epub",
+		/// removing unsuitable characters
+		/// </summary>
+		/// <returns></returns>
+		private string BuildFilename()
+		{
+			var filename = $"{_ebook.Author} - {_ebook.Title}";
+			filename = new string(filename.Where(x => !Path.GetInvalidFileNameChars().Contains(x)).ToArray());
+			return $"{filename.Trim()}.epub";
 		}
 	}
 }
