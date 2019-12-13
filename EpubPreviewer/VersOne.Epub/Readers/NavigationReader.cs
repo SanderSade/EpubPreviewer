@@ -16,7 +16,9 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			if (bookRef.Schema.Package.EpubVersion == EpubVersion.Epub2)
 			{
 				if (null != bookRef.Schema.Epub2Ncx)
+				{
 					return GetNavigationItems(bookRef, bookRef.Schema.Epub2Ncx);
+				}
 
 				return new List<EpubNavigationItemRef>(); // if Ncx is missing, return an empty list
 			}
@@ -71,10 +73,14 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 					result.Add(navigationItemRef);
 				}
 				else
+				{
 					result = GetNavigationItems(bookRef, epub3Nav.Ol);
+				}
 			}
 			else
+			{
 				result = new List<EpubNavigationItemRef>();
+			}
 
 			return result;
 		}
@@ -117,8 +123,15 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 
 		private static EpubTextContentFileRef GetHtmlContentFileRef(EpubBookRef bookRef, string contentFileName)
 		{
-			if (contentFileName == null) return null;
-			if (!bookRef.Content.Html.TryGetValue(contentFileName, out var htmlContentFileRef)) return null;
+			if (contentFileName == null)
+			{
+				return null;
+			}
+
+			if (!bookRef.Content.Html.TryGetValue(contentFileName, out var htmlContentFileRef))
+			{
+				return null;
+			}
 
 			return htmlContentFileRef;
 		}
@@ -129,7 +142,9 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			foreach (var option in options)
 			{
 				if (!string.IsNullOrEmpty(option))
+				{
 					return option;
+				}
 			}
 
 			return string.Empty;

@@ -57,7 +57,11 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.RefEntities
 		{
 			if (!_isDisposed)
 			{
-				if (disposing) EpubArchive?.Dispose();
+				if (disposing)
+				{
+					EpubArchive?.Dispose();
+				}
+
 				_isDisposed = true;
 			}
 		}

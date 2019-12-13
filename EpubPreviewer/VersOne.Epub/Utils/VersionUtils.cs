@@ -10,7 +10,9 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Utils
 			var epubVersionType = typeof(EpubVersion);
 			var fieldInfo = epubVersionType.GetRuntimeField(epubVersion.ToString());
 			if (fieldInfo != null)
+			{
 				return fieldInfo.GetCustomAttribute<VersionStringAttribute>().Version;
+			}
 
 			return epubVersion.ToString();
 		}

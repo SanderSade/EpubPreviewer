@@ -32,7 +32,9 @@ namespace SanderSade.EpubPreviewer.App
 		private void ConfigForm_DragEnter(object sender, DragEventArgs e)
 		{
 			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+			{
 				e.Effect = DragDropEffects.Copy;
+			}
 		}
 
 
@@ -40,7 +42,7 @@ namespace SanderSade.EpubPreviewer.App
 		{
 			var files = (string[])e.Data.GetData(DataFormats.FileDrop);
 			Cursor = Cursors.WaitCursor;
-			var parallelOptions = new ParallelOptions {MaxDegreeOfParallelism = Environment.ProcessorCount};
+			var parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount };
 			RunPreview(files, parallelOptions);
 
 			Cursor = Cursors.Arrow;

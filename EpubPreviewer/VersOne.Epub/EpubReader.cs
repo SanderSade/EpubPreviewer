@@ -31,10 +31,14 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub
 			if (!File.Exists(filePath))
 			{
 				if (!filePath.StartsWith(@"\\?\")) // handle large file name lengths
+				{
 					filePath = @"\\?\" + filePath;
+				}
 
 				if (!File.Exists(filePath))
+				{
 					throw new FileNotFoundException("Specified epub file not found.", filePath);
+				}
 			}
 
 			return OpenBook(GetZipArchive(filePath));
@@ -135,7 +139,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub
 
 		private static EpubContent ReadContent(EpubContentRef contentRef)
 		{
-			return new EpubContent {Html = ReadTextContentFiles(contentRef.Html)};
+			return new EpubContent { Html = ReadTextContentFiles(contentRef.Html) };
 		}
 
 
@@ -170,9 +174,16 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub
 			var result = new List<EpubNavigationItem>();
 			foreach (var navigationItemRef in navigationItemRefs)
 			{
-				var navigationItem = new EpubNavigationItem(navigationItemRef.Type) {Title = navigationItemRef.Title, Link = navigationItemRef.Link};
+				var navigationItem = new EpubNavigationItem(navigationItemRef.Type)
+				{
+					Title = navigationItemRef.Title,
+					Link = navigationItemRef.Link
+				};
+
 				if (navigationItemRef.HtmlContentFileRef != null)
+				{
 					navigationItem.HtmlContentFile = epubBook.Content.Html[navigationItemRef.HtmlContentFileRef.FileName];
+				}
 
 				navigationItem.NestedItems = ReadNavigation(epubBook, navigationItemRef.NestedItems);
 				result.Add(navigationItem);

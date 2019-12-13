@@ -15,15 +15,28 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 		{
 			var result = new Epub2Ncx();
 			var tocId = package.Spine.Toc;
-			if (string.IsNullOrEmpty(tocId)) return null;
+			if (string.IsNullOrEmpty(tocId))
+			{
+				return null;
+			}
 
 			var tocManifestItem = package.Manifest.FirstOrDefault(item => item.Id.CompareOrdinalIgnoreCase(tocId));
-			if (tocManifestItem == null) throw new Exception($"EPUB parsing error: TOC item {tocId} not found in EPUB manifest.");
+			if (tocManifestItem == null)
+			{
+				throw new Exception($"EPUB parsing error: TOC item {tocId} not found in EPUB manifest.");
+			}
 
 			var tocFileEntryPath = ZipPathUtils.Combine(contentDirectoryPath, tocManifestItem.Href);
 			var tocFileEntry = epubArchive.GetEntry(tocFileEntryPath);
-			if (tocFileEntry == null) throw new Exception($"EPUB parsing error: TOC file {tocFileEntryPath} not found in archive.");
-			if (tocFileEntry.Length > int.MaxValue) throw new Exception($"EPUB parsing error: TOC file {tocFileEntryPath} is larger than 2 Gb.");
+			if (tocFileEntry == null)
+			{
+				throw new Exception($"EPUB parsing error: TOC file {tocFileEntryPath} not found in archive.");
+			}
+
+			if (tocFileEntry.Length > int.MaxValue)
+			{
+				throw new Exception($"EPUB parsing error: TOC file {tocFileEntryPath} is larger than 2 Gb.");
+			}
 
 			XDocument containerDocument;
 			using (var containerStream = tocFileEntry.Open())
@@ -33,15 +46,24 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 
 			XNamespace ncxNamespace = "http://www.daisy.org/z3986/2005/ncx/";
 			var ncxNode = containerDocument.Element(ncxNamespace + "ncx");
-			if (ncxNode == null) throw new Exception("EPUB parsing error: TOC file does not contain ncx element.");
+			if (ncxNode == null)
+			{
+				throw new Exception("EPUB parsing error: TOC file does not contain ncx element.");
+			}
 
 			var headNode = ncxNode.Element(ncxNamespace + "head");
-			if (headNode == null) throw new Exception("EPUB parsing error: TOC file does not contain head element.");
+			if (headNode == null)
+			{
+				throw new Exception("EPUB parsing error: TOC file does not contain head element.");
+			}
 
 			var navigationHead = ReadNavigationHead(headNode);
 			result.Head = navigationHead;
 			var docTitleNode = ncxNode.Element(ncxNamespace + "docTitle");
-			if (docTitleNode == null) throw new Exception("EPUB parsing error: TOC file does not contain docTitle element.");
+			if (docTitleNode == null)
+			{
+				throw new Exception("EPUB parsing error: TOC file does not contain docTitle element.");
+			}
 
 			var navigationDocTitle = ReadNavigationDocTitle(docTitleNode);
 			result.DocTitle = navigationDocTitle;
@@ -53,7 +75,10 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			}
 
 			var navMapNode = ncxNode.Element(ncxNamespace + "navMap");
-			if (navMapNode == null) throw new Exception("EPUB parsing error: TOC file does not contain navMap element.");
+			if (navMapNode == null)
+			{
+				throw new Exception("EPUB parsing error: TOC file does not contain navMap element.");
+			}
 
 			var navMap = ReadNavigationMap(navMapNode);
 			result.NavMap = navMap;
@@ -100,8 +125,15 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 						}
 					}
 
-					if (string.IsNullOrWhiteSpace(meta.Name)) throw new Exception("Incorrect EPUB navigation meta: meta name is missing.");
-					if (meta.Content == null) throw new Exception("Incorrect EPUB navigation meta: meta content is missing.");
+					if (string.IsNullOrWhiteSpace(meta.Name))
+					{
+						throw new Exception("Incorrect EPUB navigation meta: meta name is missing.");
+					}
+
+					if (meta.Content == null)
+					{
+						throw new Exception("Incorrect EPUB navigation meta: meta content is missing.");
+					}
 
 					result.Add(meta);
 				}
@@ -117,7 +149,9 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			foreach (var textNode in docTitleNode.Elements())
 			{
 				if (textNode.CompareNameTo("text"))
+				{
 					result.Add(textNode.Value);
+				}
 			}
 
 			return result;
@@ -130,7 +164,9 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			foreach (var textNode in docAuthorNode.Elements())
 			{
 				if (textNode.CompareNameTo("text"))
+				{
 					result.Add(textNode.Value);
+				}
 			}
 
 			return result;
@@ -145,7 +181,10 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 				if (navigationPointNode.CompareNameTo("navPoint"))
 				{
 					var navigationPoint = ReadNavigationPoint(navigationPointNode);
-					if (null != navigationPoint) result.Add(navigationPoint);
+					if (null != navigationPoint)
+					{
+						result.Add(navigationPoint);
+					}
 				}
 			}
 
@@ -173,7 +212,10 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 				}
 			}
 
-			if (string.IsNullOrWhiteSpace(result.Id)) throw new Exception("Incorrect EPUB navigation point: point ID is missing.");
+			if (string.IsNullOrWhiteSpace(result.Id))
+			{
+				throw new Exception("Incorrect EPUB navigation point: point ID is missing.");
+			}
 
 			result.NavigationLabels = new List<Epub2NcxNavigationLabel>();
 			result.ChildNavigationPoints = new List<Epub2NcxNavigationPoint>();
@@ -191,13 +233,19 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 						break;
 					case "navpoint":
 						var childNavigationPoint = ReadNavigationPoint(navigationPointChildNode);
-						if (null != childNavigationPoint) result.ChildNavigationPoints.Add(childNavigationPoint);
+						if (null != childNavigationPoint)
+						{
+							result.ChildNavigationPoints.Add(childNavigationPoint);
+						}
+
 						break;
 				}
 			}
 
 			if (!result.NavigationLabels.Any())
+			{
 				throw new Exception($"EPUB parsing error: navigation point {result.Id} should contain at least one navigation label.");
+			}
 
 			if (result.Content == null)
 			{
@@ -216,7 +264,10 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 		{
 			var result = new Epub2NcxNavigationLabel();
 			var navigationLabelTextNode = navigationLabelNode.Element(navigationLabelNode.Name.Namespace + "text");
-			if (navigationLabelTextNode == null) throw new Exception("Incorrect EPUB navigation label: label text element is missing.");
+			if (navigationLabelTextNode == null)
+			{
+				throw new Exception("Incorrect EPUB navigation label: label text element is missing.");
+			}
 
 			result.Text = navigationLabelTextNode.Value;
 			return result;
@@ -240,7 +291,10 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 				}
 			}
 
-			if (string.IsNullOrWhiteSpace(result.Source)) throw new Exception("Incorrect EPUB navigation content: content source is missing.");
+			if (string.IsNullOrWhiteSpace(result.Source))
+			{
+				throw new Exception("Incorrect EPUB navigation content: content source is missing.");
+			}
 
 			return result;
 		}
@@ -279,9 +333,13 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 					case "type":
 						Epub2NcxPageTargetType type;
 						if (Enum.TryParse(attributeValue, true, out type))
+						{
 							result.Type = type;
+						}
 						else
+						{
 							result.Type = Epub2NcxPageTargetType.Unknown;
+						}
 
 						break;
 					case "class":
@@ -293,7 +351,10 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 				}
 			}
 
-			if (result.Type == default) throw new Exception("Incorrect EPUB navigation page target: page target type is missing.");
+			if (result.Type == default)
+			{
+				throw new Exception("Incorrect EPUB navigation page target: page target type is missing.");
+			}
 
 			result.NavigationLabels = new List<Epub2NcxNavigationLabel>();
 			foreach (var navigationPageTargetChildNode in navigationPageTargetNode.Elements())
@@ -311,7 +372,10 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 				}
 			}
 
-			if (!result.NavigationLabels.Any()) throw new Exception("Incorrect EPUB navigation page target: at least one navLabel element is required.");
+			if (!result.NavigationLabels.Any())
+			{
+				throw new Exception("Incorrect EPUB navigation page target: at least one navLabel element is required.");
+			}
 
 			return result;
 		}
@@ -349,7 +413,10 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 				}
 			}
 
-			if (!result.NavigationLabels.Any()) throw new Exception("Incorrect EPUB navigation page target: at least one navLabel element is required.");
+			if (!result.NavigationLabels.Any())
+			{
+				throw new Exception("Incorrect EPUB navigation page target: at least one navLabel element is required.");
+			}
 
 			return result;
 		}
@@ -378,7 +445,10 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 				}
 			}
 
-			if (string.IsNullOrWhiteSpace(result.Id)) throw new Exception("Incorrect EPUB navigation target: navigation target ID is missing.");
+			if (string.IsNullOrWhiteSpace(result.Id))
+			{
+				throw new Exception("Incorrect EPUB navigation target: navigation target ID is missing.");
+			}
 
 			foreach (var navigationTargetChildNode in navigationTargetNode.Elements())
 			{
@@ -395,7 +465,10 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 				}
 			}
 
-			if (!result.NavigationLabels.Any()) throw new Exception("Incorrect EPUB navigation target: at least one navLabel element is required.");
+			if (!result.NavigationLabels.Any())
+			{
+				throw new Exception("Incorrect EPUB navigation target: at least one navLabel element is required.");
+			}
 
 			return result;
 		}

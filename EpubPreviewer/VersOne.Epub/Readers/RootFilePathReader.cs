@@ -11,7 +11,10 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 		{
 			const string epubContainerFilePath = "META-INF/container.xml";
 			var containerFileEntry = epubArchive.GetEntry(epubContainerFilePath);
-			if (containerFileEntry == null) throw new Exception($"EPUB parsing error: {epubContainerFilePath} file not found in archive.");
+			if (containerFileEntry == null)
+			{
+				throw new Exception($"EPUB parsing error: {epubContainerFilePath} file not found in archive.");
+			}
 
 			XDocument containerDocument;
 			using (var containerStream = containerFileEntry.Open())
@@ -23,7 +26,10 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			var fullPathAttribute = containerDocument.Element(cnsNamespace + "container")?.Element(cnsNamespace + "rootfiles")
 				?.Element(cnsNamespace + "rootfile")?.Attribute("full-path");
 
-			if (fullPathAttribute == null) throw new Exception("EPUB parsing error: root file path not found in the EPUB container.");
+			if (fullPathAttribute == null)
+			{
+				throw new Exception("EPUB parsing error: root file path not found in the EPUB container.");
+			}
 
 			return fullPathAttribute.Value;
 		}

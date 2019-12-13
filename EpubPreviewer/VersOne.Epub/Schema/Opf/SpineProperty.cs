@@ -15,7 +15,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Schema.Opf
 	{
 		public static List<SpineProperty> ParsePropertyList(string stringValue)
 		{
-			return stringValue.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).Select(propertyString => ParseProperty(propertyString.Trim()))
+			return stringValue.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(propertyString => ParseProperty(propertyString.Trim()))
 				.ToList();
 		}
 

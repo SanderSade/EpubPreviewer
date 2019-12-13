@@ -27,13 +27,19 @@ namespace SanderSade.EpubPreviewer.Epub
 			var readingOrder = _ebook.GetReadingOrder();
 
 			if (navigation.Count == 0 && readingOrder.Count == 0)
+			{
 				return BuildFromContent(_ebook.Content.Html.Values.ToList());
+			}
 
 			if (readingOrder.Count == 0)
+			{
 				return BuildFromNavigation(navigation);
+			}
 
 			if (navigation.Count == 0)
+			{
 				return BuildFromContent(readingOrder);
+			}
 
 			return BuildFullToc(readingOrder, navigation);
 		}
@@ -98,27 +104,29 @@ namespace SanderSade.EpubPreviewer.Epub
 					break;
 
 				case 0: //entry is where we expected
-					{
-						readingFiles.RemoveAt(0);
-						BuidNavigation(item);
-						break;
-					}
+				{
+					readingFiles.RemoveAt(0);
+					BuidNavigation(item);
+					break;
+				}
 				default: //extra entries in the reading order, add to previous entry as subentries
+				{
+					readingFiles.RemoveAt(readingFile);
+					_sb.AppendLine("<ul>");
+					for (var i = 0; i < readingFile; i++)
 					{
-						readingFiles.RemoveAt(readingFile);
-						_sb.AppendLine("<ul>");
-						for (var i = 0; i < readingFile; i++)
+						var contentFile = readingFiles[i];
+						if (_ebook.Content.Html.Values.Any(x => x.FileName == contentFile))
 						{
-							var contentFile = readingFiles[i];
-							if (_ebook.Content.Html.Values.Any(x => x.FileName == contentFile))
-								_sb.AppendLine($"<li><a href=\"{contentFile}\">{contentFile}</a></li>");
+							_sb.AppendLine($"<li><a href=\"{contentFile}\">{contentFile}</a></li>");
 						}
-
-						_sb.AppendLine("</ul>");
-						readingFiles.RemoveRange(0, readingFile);
-						BuidNavigation(item);
-						break;
 					}
+
+					_sb.AppendLine("</ul>");
+					readingFiles.RemoveRange(0, readingFile);
+					BuidNavigation(item);
+					break;
+				}
 			}
 		}
 
@@ -176,7 +184,9 @@ namespace SanderSade.EpubPreviewer.Epub
 			string BuildContentLink()
 			{
 				if (string.IsNullOrWhiteSpace(item.Link.Anchor))
+				{
 					return item.Link.ContentFileName.TrimStart('/', '\\');
+				}
 
 				return $"{item.Link.ContentFileName.TrimStart('/', '\\')}#{item.Link.Anchor}";
 			}
@@ -190,14 +200,16 @@ namespace SanderSade.EpubPreviewer.Epub
 					{
 						FirstLink = buildContentLink;
 						_sb.AppendLine($"<li><a href=\"{buildContentLink}\" class=\"highlight\">{item.Title}</a></li>");
-
 					}
 					else
+					{
 						_sb.AppendLine($"<li><a href=\"{buildContentLink}\">{item.Title}</a></li>");
-
+					}
 				}
 				else
+				{
 					_sb.AppendLine($"<li><h3>{item.Title}</h3></li>");
+				}
 			}
 		}
 	}

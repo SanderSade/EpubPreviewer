@@ -21,15 +21,24 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			if (navManifestItem == null)
 			{
 				if (package.EpubVersion == EpubVersion.Epub2)
+				{
 					return null;
+				}
 
 				throw new Exception("EPUB parsing error: NAV item not found in EPUB manifest.");
 			}
 
 			var navFileEntryPath = ZipPathUtils.Combine(contentDirectoryPath, navManifestItem.Href);
 			var navFileEntry = epubArchive.GetEntry(navFileEntryPath);
-			if (navFileEntry == null) throw new Exception($"EPUB parsing error: navigation file {navFileEntryPath} not found in archive.");
-			if (navFileEntry.Length > int.MaxValue) throw new Exception($"EPUB parsing error: navigation file {navFileEntryPath} is larger than 2 Gb.");
+			if (navFileEntry == null)
+			{
+				throw new Exception($"EPUB parsing error: navigation file {navFileEntryPath} not found in archive.");
+			}
+
+			if (navFileEntry.Length > int.MaxValue)
+			{
+				throw new Exception($"EPUB parsing error: navigation file {navFileEntryPath} is larger than 2 Gb.");
+			}
 
 			XDocument navDocument;
 			using (var containerStream = navFileEntry.Open())
@@ -39,10 +48,16 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 
 			var xhtmlNamespace = navDocument.Root.Name.Namespace;
 			var htmlNode = navDocument.Element(xhtmlNamespace + "html");
-			if (htmlNode == null) throw new Exception("EPUB parsing error: navigation file does not contain html element.");
+			if (htmlNode == null)
+			{
+				throw new Exception("EPUB parsing error: navigation file does not contain html element.");
+			}
 
 			var bodyNode = htmlNode.Element(xhtmlNamespace + "body");
-			if (bodyNode == null) throw new Exception("EPUB parsing error: navigation file does not contain body element.");
+			if (bodyNode == null)
+			{
+				throw new Exception("EPUB parsing error: navigation file does not contain body element.");
+			}
 
 			result.Navs = new List<Epub3Nav>();
 			var folder = ZipPathUtils.GetDirectoryPath(navManifestItem.Href);
@@ -60,7 +75,10 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 
 		private static void AdjustRelativePath(Epub3NavOl nav, string rootFolder)
 		{
-			if (nav == null) return;
+			if (nav == null)
+			{
+				return;
+			}
 
 			foreach (var li in nav.Lis)
 			{

@@ -71,12 +71,22 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.RefEntities
 
 		private ZipArchiveEntry GetContentFileEntry()
 		{
-			if (string.IsNullOrEmpty(FileName)) throw new Exception("EPUB parsing error: file name of the specified content file is empty.");
+			if (string.IsNullOrEmpty(FileName))
+			{
+				throw new Exception("EPUB parsing error: file name of the specified content file is empty.");
+			}
 
 			var contentFilePath = ZipPathUtils.Combine(_epubBookRef.Schema.ContentDirectoryPath, FileName);
 			var contentFileEntry = _epubBookRef.EpubArchive.GetEntry(contentFilePath);
-			if (contentFileEntry == null) throw new Exception($"EPUB parsing error: file \"{contentFilePath}\" was not found in the archive.");
-			if (contentFileEntry.Length > int.MaxValue) throw new Exception($"EPUB parsing error: file \"{contentFilePath}\" is larger than 2 Gb.");
+			if (contentFileEntry == null)
+			{
+				throw new Exception($"EPUB parsing error: file \"{contentFilePath}\" was not found in the archive.");
+			}
+
+			if (contentFileEntry.Length > int.MaxValue)
+			{
+				throw new Exception($"EPUB parsing error: file \"{contentFilePath}\" is larger than 2 Gb.");
+			}
 
 			return contentFileEntry;
 		}
@@ -86,7 +96,9 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.RefEntities
 		{
 			var contentStream = contentFileEntry.Open();
 			if (contentStream == null)
+			{
 				throw new Exception($"Incorrect EPUB file: content file \"{FileName}\" specified in the manifest was not found in the archive.");
+			}
 
 			return contentStream;
 		}

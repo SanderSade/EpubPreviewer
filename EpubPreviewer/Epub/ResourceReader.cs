@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 
@@ -9,7 +10,7 @@ namespace SanderSade.EpubPreviewer.Epub
 		/// <summary>
 		///     Read embedded resource
 		/// </summary>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
+		[SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
 		internal static string Read(string name)
 		{
 			var assembly = Assembly.GetExecutingAssembly();

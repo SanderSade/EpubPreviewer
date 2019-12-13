@@ -6,7 +6,9 @@
 		{
 			var lastSlashIndex = filePath.LastIndexOf('/');
 			if (lastSlashIndex == -1)
+			{
 				return string.Empty;
+			}
 
 			return filePath.Substring(0, lastSlashIndex);
 		}
@@ -14,7 +16,10 @@
 
 		public static string Combine(string directory, string fileName)
 		{
-			if (string.IsNullOrEmpty(directory)) return fileName;
+			if (string.IsNullOrEmpty(directory))
+			{
+				return fileName;
+			}
 
 			while (fileName.StartsWith("../"))
 			{

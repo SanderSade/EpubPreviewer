@@ -16,7 +16,9 @@ namespace SanderSade.EpubPreviewer.Epub
 		internal static void Preview(string file)
 		{
 			if (!File.Exists(file))
+			{
 				throw new FileNotFoundException($"File \"{file}\" does not exist!", file);
+			}
 
 			// ReSharper disable once AssignNullToNotNullAttribute
 			var cleaned = new string(Path.GetFileNameWithoutExtension(file).Where(char.IsLetterOrDigit).ToArray());

@@ -13,7 +13,10 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 		public static EpubPackage ReadPackage(ZipArchive epubArchive, string rootFilePath)
 		{
 			var rootFileEntry = epubArchive.GetEntry(rootFilePath);
-			if (rootFileEntry == null) throw new Exception("EPUB parsing error: root file not found in archive.");
+			if (rootFileEntry == null)
+			{
+				throw new Exception("EPUB parsing error: root file not found in archive.");
+			}
 
 			XDocument containerDocument;
 			using (var containerStream = rootFileEntry.Open())
@@ -43,17 +46,26 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 
 			result.EpubVersion = epubVersion;
 			var metadataNode = packageNode.Element(opfNamespace + "metadata");
-			if (metadataNode == null) throw new Exception("EPUB parsing error: metadata not found in the package.");
+			if (metadataNode == null)
+			{
+				throw new Exception("EPUB parsing error: metadata not found in the package.");
+			}
 
 			var metadata = ReadMetadata(metadataNode, result.EpubVersion);
 			result.Metadata = metadata;
 			var manifestNode = packageNode.Element(opfNamespace + "manifest");
-			if (manifestNode == null) throw new Exception("EPUB parsing error: manifest not found in the package.");
+			if (manifestNode == null)
+			{
+				throw new Exception("EPUB parsing error: manifest not found in the package.");
+			}
 
 			var manifest = ReadManifest(manifestNode);
 			result.Manifest = manifest;
 			var spineNode = packageNode.Element(opfNamespace + "spine");
-			if (spineNode == null) throw new Exception("EPUB parsing error: spine not found in the package.");
+			if (spineNode == null)
+			{
+				throw new Exception("EPUB parsing error: spine not found in the package.");
+			}
 
 			var spine = ReadSpine(spineNode, epubVersion);
 			result.Spine = spine;
@@ -211,7 +223,11 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 		{
 			var result = new EpubMetadataDate();
 			var eventAttribute = metadataDateNode.Attribute(metadataDateNode.Name.Namespace + "event");
-			if (eventAttribute != null) result.Event = eventAttribute.Value;
+			if (eventAttribute != null)
+			{
+				result.Event = eventAttribute.Value;
+			}
+
 			result.Date = metadataDateNode.Value;
 			return result;
 		}
@@ -328,9 +344,20 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 						}
 					}
 
-					if (string.IsNullOrWhiteSpace(manifestItem.Id)) throw new Exception("Incorrect EPUB manifest: item ID is missing");
-					if (string.IsNullOrWhiteSpace(manifestItem.Href)) throw new Exception("Incorrect EPUB manifest: item href is missing");
-					if (string.IsNullOrWhiteSpace(manifestItem.MediaType)) throw new Exception("Incorrect EPUB manifest: item media type is missing");
+					if (string.IsNullOrWhiteSpace(manifestItem.Id))
+					{
+						throw new Exception("Incorrect EPUB manifest: item ID is missing");
+					}
+
+					if (string.IsNullOrWhiteSpace(manifestItem.Href))
+					{
+						throw new Exception("Incorrect EPUB manifest: item href is missing");
+					}
+
+					if (string.IsNullOrWhiteSpace(manifestItem.MediaType))
+					{
+						throw new Exception("Incorrect EPUB manifest: item media type is missing");
+					}
 
 					result.Add(manifestItem);
 				}
@@ -343,7 +370,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 		private static List<ManifestProperty> ReadManifestProperties(string propertiesAttributeValue)
 		{
 			var result = new List<ManifestProperty>();
-			foreach (var propertyStringValue in propertiesAttributeValue.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries))
+			foreach (var propertyStringValue in propertiesAttributeValue.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries))
 			{
 				result.Add(ManifestPropertyParser.Parse(propertyStringValue));
 			}
@@ -401,7 +428,10 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 						}
 					}
 
-					if (string.IsNullOrWhiteSpace(spineItemRef.IdRef)) throw new Exception("Incorrect EPUB spine: item ID ref is missing");
+					if (string.IsNullOrWhiteSpace(spineItemRef.IdRef))
+					{
+						throw new Exception("Incorrect EPUB spine: item ID ref is missing");
+					}
 
 					var linearAttribute = spineItemNode.Attribute("linear");
 					spineItemRef.IsLinear = linearAttribute == null || !linearAttribute.CompareValueTo("no");
@@ -438,8 +468,15 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 						}
 					}
 
-					if (string.IsNullOrWhiteSpace(guideReference.Type)) throw new Exception("Incorrect EPUB guide: item type is missing");
-					if (string.IsNullOrWhiteSpace(guideReference.Href)) throw new Exception("Incorrect EPUB guide: item href is missing");
+					if (string.IsNullOrWhiteSpace(guideReference.Type))
+					{
+						throw new Exception("Incorrect EPUB guide: item type is missing");
+					}
+
+					if (string.IsNullOrWhiteSpace(guideReference.Href))
+					{
+						throw new Exception("Incorrect EPUB guide: item href is missing");
+					}
 
 					result.Add(guideReference);
 				}

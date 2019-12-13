@@ -40,14 +40,17 @@ namespace SanderSade.EpubPreviewer.Epub
 			var customCssPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "EpubPreviewer.css");
 			//custom CSS
 			if (File.Exists(customCssPath))
+			{
 				File.Copy(customCssPath, Path.Combine(_outFolder, "EpubPreviewer.css"));
+			}
 
 			return htmlPath;
 		}
 
+
 		/// <summary>
-		/// Build filename in form "autor - title.epub",
-		/// removing unsuitable characters
+		///     Build filename in form "autor - title.epub",
+		///     removing unsuitable characters
 		/// </summary>
 		/// <returns></returns>
 		private string BuildFilename()

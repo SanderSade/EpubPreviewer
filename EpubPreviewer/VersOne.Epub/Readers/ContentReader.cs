@@ -8,7 +8,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 	{
 		public static EpubContentRef ParseContentMap(EpubBookRef bookRef)
 		{
-			var result = new EpubContentRef {Html = new Dictionary<string, EpubTextContentFileRef>()};
+			var result = new EpubContentRef { Html = new Dictionary<string, EpubTextContentFileRef>() };
 			foreach (var manifestItem in bookRef.Schema.Package.Manifest)
 			{
 				var fileName = manifestItem.Href;
@@ -25,10 +25,15 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 					case EpubContentType.DtbookNcx:
 						var epubTextContentFile = new EpubTextContentFileRef(bookRef)
 						{
-							FileName = fileName, ContentMimeType = contentMimeType, ContentType = contentType
+							FileName = fileName,
+							ContentMimeType = contentMimeType,
+							ContentType = contentType
 						};
 
-						if (contentType == EpubContentType.Xhtml11) result.Html[fileName] = epubTextContentFile;
+						if (contentType == EpubContentType.Xhtml11)
+						{
+							result.Html[fileName] = epubTextContentFile;
+						}
 
 						break;
 				}
