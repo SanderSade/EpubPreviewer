@@ -14,7 +14,6 @@ namespace SanderSade.EpubPreviewer.App
 			InitializeComponent();
 		}
 
-
 		private void btDeleteTemporary_Click(object sender, EventArgs e)
 		{
 			Cursor = Cursors.WaitCursor;
@@ -22,12 +21,10 @@ namespace SanderSade.EpubPreviewer.App
 			Cursor = Cursors.Arrow;
 		}
 
-
 		private void lbLink_Click(object sender, EventArgs e)
 		{
 			Process.Start("https://github.com/SanderSade/EpubPreviewer");
 		}
-
 
 		private void ConfigForm_DragEnter(object sender, DragEventArgs e)
 		{
@@ -36,7 +33,6 @@ namespace SanderSade.EpubPreviewer.App
 				e.Effect = DragDropEffects.Copy;
 			}
 		}
-
 
 		private void ConfigForm_DragDrop(object sender, DragEventArgs e)
 		{
@@ -47,7 +43,6 @@ namespace SanderSade.EpubPreviewer.App
 
 			Cursor = Cursors.Arrow;
 		}
-
 
 		private void RunPreview(string[] files, ParallelOptions parallelOptions)
 		{

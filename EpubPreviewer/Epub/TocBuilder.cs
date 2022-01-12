@@ -10,16 +10,13 @@ namespace SanderSade.EpubPreviewer.Epub
 		private readonly EpubBookRef _ebook;
 		private readonly StringBuilder _sb;
 
-
 		public TocBuilder(EpubBookRef ebook)
 		{
 			_ebook = ebook;
 			_sb = new StringBuilder(2048);
 		}
 
-
 		internal string FirstLink { get; set; }
-
 
 		internal string Parse()
 		{
@@ -44,14 +41,12 @@ namespace SanderSade.EpubPreviewer.Epub
 			return BuildFullToc(readingOrder, navigation);
 		}
 
-
 		/// <summary>
 		///     Build full TOC, containing entries from both navigation and reading order
 		/// </summary>
 		private string BuildFullToc(List<EpubTextContentFileRef> readingOrder, List<EpubNavigationItemRef> navigation)
 		{
-			var readingFiles = readingOrder.Select(x => x.FileName).ToList();
-
+			var readingFiles = readingOrder.ConvertAll(x => x.FileName);
 
 			_sb.AppendLine("<ul>");
 
@@ -63,7 +58,7 @@ namespace SanderSade.EpubPreviewer.Epub
 			if (readingFiles.Count > 0)
 			{
 				_sb.AppendLine("<ul>");
-				readingFiles.ForEach(contentFile => { _sb.AppendLine($"<li><a href=\"{contentFile}\">{contentFile}</a></li>"); });
+				readingFiles.ForEach(contentFile => _sb.Append("<li><a href=\"").Append(contentFile).Append("\">").Append(contentFile).AppendLine("</a></li>"));
 				_sb.AppendLine("</ul>");
 			}
 
@@ -71,11 +66,10 @@ namespace SanderSade.EpubPreviewer.Epub
 			return _sb.ToString();
 		}
 
-
 		private void BuildNavigationWithRecursion(List<string> readingFiles, EpubNavigationItemRef item)
 		{
 			BuildNavigationWithReadingFile(readingFiles, item);
-			if (item.NestedItems != null && item.NestedItems.Count > 0)
+			if (item.NestedItems?.Count > 0)
 			{
 				_sb.AppendLine("<ul>");
 				foreach (var nestedItem in item.NestedItems)
@@ -86,7 +80,6 @@ namespace SanderSade.EpubPreviewer.Epub
 				_sb.AppendLine("</ul>");
 			}
 		}
-
 
 		/// <summary>
 		///     Ensure that all entries in reading order are represented in file
@@ -118,7 +111,7 @@ namespace SanderSade.EpubPreviewer.Epub
 						var contentFile = readingFiles[i];
 						if (_ebook.Content.Html.Values.Any(x => x.FileName == contentFile))
 						{
-							_sb.AppendLine($"<li><a href=\"{contentFile}\">{contentFile}</a></li>");
+							_sb.Append("<li><a href=\"").Append(contentFile).Append("\">").Append(contentFile).AppendLine("</a></li>");
 						}
 					}
 
@@ -130,7 +123,6 @@ namespace SanderSade.EpubPreviewer.Epub
 			}
 		}
 
-
 		/// <summary>
 		///     TOC/navigation is missing - build from reading order or html files
 		/// </summary>
@@ -141,14 +133,13 @@ namespace SanderSade.EpubPreviewer.Epub
 
 			foreach (var contentFile in contentFiles)
 			{
-				_sb.AppendLine($"<li><a href=\"{contentFile.FileName}\">{contentFile.FileName}</a></li>");
+				_sb.Append("<li><a href=\"").Append(contentFile.FileName).Append("\">").Append(contentFile.FileName).AppendLine("</a></li>");
 			}
 
 			_sb.AppendLine("</ul>");
 
 			return _sb.ToString();
 		}
-
 
 		/// <summary>
 		///     Navigation exists, but reading order is missing
@@ -165,11 +156,10 @@ namespace SanderSade.EpubPreviewer.Epub
 			return _sb.ToString();
 		}
 
-
 		private void BuildWithRecursion(EpubNavigationItemRef item)
 		{
 			BuidNavigation(item);
-			if (item.NestedItems != null && item.NestedItems.Count > 0)
+			if (item.NestedItems?.Count > 0)
 			{
 				foreach (var nestedItem in item.NestedItems)
 				{
@@ -177,7 +167,6 @@ namespace SanderSade.EpubPreviewer.Epub
 				}
 			}
 		}
-
 
 		private void BuidNavigation(EpubNavigationItemRef item)
 		{
@@ -199,16 +188,16 @@ namespace SanderSade.EpubPreviewer.Epub
 					if (FirstLink == null)
 					{
 						FirstLink = buildContentLink;
-						_sb.AppendLine($"<li><a href=\"{buildContentLink}\" class=\"highlight\">{item.Title}</a></li>");
+						_sb.Append("<li><a href=\"").Append(buildContentLink).Append("\" class=\"highlight\">").Append(item.Title).AppendLine("</a></li>");
 					}
 					else
 					{
-						_sb.AppendLine($"<li><a href=\"{buildContentLink}\">{item.Title}</a></li>");
+						_sb.Append("<li><a href=\"").Append(buildContentLink).Append("\">").Append(item.Title).AppendLine("</a></li>");
 					}
 				}
 				else
 				{
-					_sb.AppendLine($"<li><h3>{item.Title}</h3></li>");
+					_sb.Append("<li><h3>").Append(item.Title).AppendLine("</h3></li>");
 				}
 			}
 		}

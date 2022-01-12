@@ -21,7 +21,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Schema.Opf
 			Version = version;
 		}
 
-
 		public string Version { get; }
 	}
 }

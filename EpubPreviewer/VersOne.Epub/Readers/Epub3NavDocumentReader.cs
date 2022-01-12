@@ -16,7 +16,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 		{
 			var result = new Epub3NavDocument();
 			var navManifestItem =
-				package.Manifest.FirstOrDefault(item => item.Properties != null && item.Properties.Contains(ManifestProperty.Nav));
+				package.Manifest.FirstOrDefault(item => item.Properties?.Contains(ManifestProperty.Nav) == true);
 
 			if (navManifestItem == null)
 			{
@@ -72,7 +72,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			return result;
 		}
 
-
 		private static void AdjustRelativePath(Epub3NavOl nav, string rootFolder)
 		{
 			if (nav == null)
@@ -91,7 +90,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 				AdjustRelativePath(li.ChildOl, rootFolder);
 			}
 		}
-
 
 		private static Epub3Nav ReadEpub3Nav(XElement navNode)
 		{
@@ -132,13 +130,11 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			return epub3Nav;
 		}
 
-
 		private static Epub3NavOl ReadEpub3NavOl(XElement epub3NavOlNode)
 		{
 			var epub3NavOl = new Epub3NavOl();
 			foreach (var navOlNodeAttribute in epub3NavOlNode.Attributes())
 			{
-				var attributeValue = navOlNodeAttribute.Value;
 				switch (navOlNodeAttribute.GetLowerCaseLocalName())
 				{
 					case "hidden":
@@ -161,7 +157,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 
 			return epub3NavOl;
 		}
-
 
 		private static Epub3NavLi ReadEpub3NavLi(XElement epub3NavLiNode)
 		{
@@ -187,7 +182,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 
 			return epub3NavLi;
 		}
-
 
 		private static Epub3NavAnchor ReadEpub3NavAnchor(XElement epub3NavAnchorNode)
 		{
@@ -215,7 +209,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			epub3NavAnchor.Text = epub3NavAnchorNode.Value.Trim();
 			return epub3NavAnchor;
 		}
-
 
 		private static Epub3NavSpan ReadEpub3NavSpan(XElement epub3NavSpanNode)
 		{

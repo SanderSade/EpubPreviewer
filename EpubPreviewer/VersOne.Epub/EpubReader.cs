@@ -20,7 +20,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub
 			return OpenBookAsync(filePath);
 		}
 
-
 		/// <summary>
 		///     Opens the book asynchronously without reading its whole content. Holds the handle to the EPUB file.
 		/// </summary>
@@ -44,7 +43,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub
 			return OpenBook(GetZipArchive(filePath));
 		}
 
-
 		/// <summary>
 		///     Opens the book asynchronously without reading its whole content.
 		/// </summary>
@@ -54,7 +52,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub
 		{
 			return OpenBook(GetZipArchive(stream));
 		}
-
 
 		/// <summary>
 		///     Opens the book synchronously and reads all of its content into the memory. Does not hold the handle to the EPUB
@@ -66,7 +63,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub
 		{
 			return ReadBookI(filePath);
 		}
-
 
 		/// <summary>
 		///     Opens the book asynchronously and reads all of its content into the memory. Does not hold the handle to the EPUB
@@ -80,17 +76,19 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub
 			return ReadBook(epubBookRef);
 		}
 
-
 		private static EpubBookRef OpenBook(ZipArchive zipArchive, string filePath = null)
 		{
 			EpubBookRef result = null;
 			try
 			{
-				result = new EpubBookRef(zipArchive);
-				result.FilePath = filePath;
-				result.Schema = SchemaReader.ReadSchema(zipArchive);
+				result = new EpubBookRef(zipArchive)
+				{
+					FilePath = filePath,
+					Schema = SchemaReader.ReadSchema(zipArchive)
+				};
+
 				result.Title = result.Schema.Package.Metadata.Titles.FirstOrDefault() ?? string.Empty;
-				result.AuthorList = result.Schema.Package.Metadata.Creators.Select(creator => creator.Creator).ToList();
+				result.AuthorList = result.Schema.Package.Metadata.Creators.ConvertAll(creator => creator.Creator);
 				result.Author = string.Join(", ", result.AuthorList);
 				result.Content = ContentReader.ParseContentMap(result);
 				return result;
@@ -101,7 +99,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub
 				throw;
 			}
 		}
-
 
 		private static EpubBook ReadBook(EpubBookRef epubBookRef)
 		{
@@ -124,24 +121,20 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub
 			return result;
 		}
 
-
 		private static ZipArchive GetZipArchive(string filePath)
 		{
 			return ZipFile.OpenRead(filePath);
 		}
-
 
 		private static ZipArchive GetZipArchive(Stream stream)
 		{
 			return new ZipArchive(stream, ZipArchiveMode.Read);
 		}
 
-
 		private static EpubContent ReadContent(EpubContentRef contentRef)
 		{
 			return new EpubContent { Html = ReadTextContentFiles(contentRef.Html) };
 		}
-
 
 		private static Dictionary<string, EpubTextContentFile> ReadTextContentFiles(Dictionary<string, EpubTextContentFileRef> textContentFileRefs)
 		{
@@ -162,12 +155,10 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub
 			return result;
 		}
 
-
 		private static List<EpubTextContentFile> ReadReadingOrder(EpubBook epubBook, List<EpubTextContentFileRef> htmlContentFileRefs)
 		{
-			return htmlContentFileRefs.Select(htmlContentFileRef => epubBook.Content.Html[htmlContentFileRef.FileName]).ToList();
+			return htmlContentFileRefs.ConvertAll(htmlContentFileRef => epubBook.Content.Html[htmlContentFileRef.FileName]);
 		}
-
 
 		private static List<EpubNavigationItem> ReadNavigation(EpubBook epubBook, List<EpubNavigationItemRef> navigationItemRefs)
 		{

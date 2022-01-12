@@ -25,10 +25,10 @@
 				element.addEventListener("click",
 					function(event) {
 						event.preventDefault();
-						var file = "file://" + path + "/" + this.getAttribute("href");
+						const file = `file://${path}/${this.getAttribute("href")}`;
 						document.getElementById("ifr").getAttributeNode("src").value = file;
 
-						var hl = document.getElementsByClassName("highlight");
+						const hl = document.getElementsByClassName("highlight");
 						while (hl.length > 0) {
 							hl[0].classList.remove("highlight");
 						}
@@ -41,7 +41,7 @@
 
 
 			function CopyToClipboard(containerid) {
-				var textarea = document.createElement('textarea');
+				const textarea = document.createElement('textarea');
 				textarea.id = 'temp_element';
 				textarea.style.height = 0;
 				document.body.appendChild(textarea);

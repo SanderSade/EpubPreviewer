@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using SanderSade.EpubPreviewer.VersOne.Epub.Entities;
 using SanderSade.EpubPreviewer.VersOne.Epub.RefEntities;
 using SanderSade.EpubPreviewer.VersOne.Epub.Schema.Common;
@@ -15,7 +14,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 		{
 			if (bookRef.Schema.Package.EpubVersion == EpubVersion.Epub2)
 			{
-				if (null != bookRef.Schema.Epub2Ncx)
+				if (bookRef.Schema.Epub2Ncx != null)
 				{
 					return GetNavigationItems(bookRef, bookRef.Schema.Epub2Ncx);
 				}
@@ -26,18 +25,15 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			return GetNavigationItems(bookRef, bookRef.Schema.Epub3NavDocument);
 		}
 
-
 		public static List<EpubNavigationItemRef> GetNavigationItems(EpubBookRef bookRef, Epub2Ncx epub2Ncx)
 		{
 			return GetNavigationItems(bookRef, epub2Ncx.NavMap);
 		}
 
-
 		public static List<EpubNavigationItemRef> GetNavigationItems(EpubBookRef bookRef, Epub3NavDocument epub3NavDocument)
 		{
-			return GetNavigationItems(bookRef, epub3NavDocument.Navs.FirstOrDefault(nav => nav.Type == StructuralSemanticsProperty.Toc));
+			return GetNavigationItems(bookRef, epub3NavDocument.Navs.Find(nav => nav.Type == StructuralSemanticsProperty.Toc));
 		}
-
 
 		private static List<EpubNavigationItemRef> GetNavigationItems(EpubBookRef bookRef, List<Epub2NcxNavigationPoint> navigationPoints)
 		{
@@ -47,7 +43,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 				foreach (var navigationPoint in navigationPoints)
 				{
 					var navigationItemRef = EpubNavigationItemRef.CreateAsLink();
-					navigationItemRef.Title = navigationPoint.NavigationLabels.First().Text;
+					navigationItemRef.Title = navigationPoint.NavigationLabels[0].Text;
 					navigationItemRef.Link = new EpubNavigationItemLink(navigationPoint.Content.Source);
 					navigationItemRef.HtmlContentFileRef = GetHtmlContentFileRef(bookRef, navigationItemRef.Link.ContentFileName);
 					navigationItemRef.NestedItems = GetNavigationItems(bookRef, navigationPoint.ChildNavigationPoints);
@@ -57,7 +53,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 
 			return result;
 		}
-
 
 		private static List<EpubNavigationItemRef> GetNavigationItems(EpubBookRef bookRef, Epub3Nav epub3Nav)
 		{
@@ -85,11 +80,10 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			return result;
 		}
 
-
 		private static List<EpubNavigationItemRef> GetNavigationItems(EpubBookRef bookRef, Epub3NavOl epub3NavOl)
 		{
 			var result = new List<EpubNavigationItemRef>();
-			if (epub3NavOl != null && epub3NavOl.Lis != null)
+			if (epub3NavOl?.Lis != null)
 			{
 				foreach (var epub3NavLi in epub3NavOl.Lis)
 				{
@@ -120,7 +114,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			return result;
 		}
 
-
 		private static EpubTextContentFileRef GetHtmlContentFileRef(EpubBookRef bookRef, string contentFileName)
 		{
 			if (contentFileName == null)
@@ -135,7 +128,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 
 			return htmlContentFileRef;
 		}
-
 
 		private static string GetFirstNonEmptyHeader(params string[] options)
 		{

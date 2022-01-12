@@ -6,7 +6,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Utils
 	{
 		public static bool CompareOrdinalIgnoreCase(this string source, string value)
 		{
-			return string.Compare(source, value, StringComparison.OrdinalIgnoreCase) == 0;
+			return string.Equals(source, value, StringComparison.OrdinalIgnoreCase);
 		}
 	}
 }

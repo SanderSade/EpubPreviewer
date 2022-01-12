@@ -16,8 +16,7 @@ namespace SanderSade.EpubPreviewer
 		{
 			Initialize();
 
-
-			if (files != null && files.Length > 0)
+			if (files?.Length > 0)
 			{
 				foreach (var file in files)
 				{
@@ -40,7 +39,7 @@ namespace SanderSade.EpubPreviewer
 		{
 			Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 
-			Application.ThreadException += (sender, args) =>
+			Application.ThreadException += (_, args) =>
 				LogUnhandledException(args.Exception, "Uncaught thread exception");
 
 			AppDomain.CurrentDomain.UnhandledException += (sender, args) => LogUnhandledException(

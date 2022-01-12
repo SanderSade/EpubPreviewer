@@ -13,7 +13,6 @@
 			return filePath.Substring(0, lastSlashIndex);
 		}
 
-
 		public static string Combine(string directory, string fileName)
 		{
 			if (string.IsNullOrEmpty(directory))

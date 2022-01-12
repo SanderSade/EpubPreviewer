@@ -14,7 +14,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			{
 				var manifestItem = bookRef.Schema.Package.Manifest.FirstOrDefault(item => item.Id == spineItemRef.IdRef);
 				if (manifestItem == null
-				) //throw new Exception($"Incorrect EPUB spine: item with IdRef = \"{spineItemRef.IdRef}\" is missing in the manifest.");
+				   ) //throw new Exception($"Incorrect EPUB spine: item with IdRef = \"{spineItemRef.IdRef}\" is missing in the manifest.");
 				{
 					continue;
 				}

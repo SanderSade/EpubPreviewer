@@ -11,23 +11,19 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.RefEntities
 	{
 		private readonly EpubBookRef _epubBookRef;
 
-
-		public EpubContentFileRef(EpubBookRef epubBookRef)
+		protected EpubContentFileRef(EpubBookRef epubBookRef)
 		{
 			_epubBookRef = epubBookRef;
 		}
-
 
 		public string FileName { get; set; }
 		public EpubContentType ContentType { get; set; }
 		public string ContentMimeType { get; set; }
 
-
 		public byte[] ReadContentAsBytes()
 		{
 			return ReadContentAsBytesAsync().Result;
 		}
-
 
 		public async Task<byte[]> ReadContentAsBytesAsync()
 		{
@@ -44,12 +40,10 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.RefEntities
 			return content;
 		}
 
-
 		public string ReadContentAsText()
 		{
 			return ReadContentAsTextAsync().Result;
 		}
-
 
 		public async Task<string> ReadContentAsTextAsync()
 		{
@@ -62,12 +56,10 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.RefEntities
 			}
 		}
 
-
 		public Stream GetContentStream()
 		{
 			return OpenContentStream(GetContentFileEntry());
 		}
-
 
 		private ZipArchiveEntry GetContentFileEntry()
 		{
@@ -90,7 +82,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.RefEntities
 
 			return contentFileEntry;
 		}
-
 
 		private Stream OpenContentStream(ZipArchiveEntry contentFileEntry)
 		{

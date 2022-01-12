@@ -99,7 +99,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			return result;
 		}
 
-
 		private static Epub2NcxHead ReadNavigationHead(XElement headNode)
 		{
 			var result = new Epub2NcxHead();
@@ -142,7 +141,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			return result;
 		}
 
-
 		private static Epub2NcxDocTitle ReadNavigationDocTitle(XElement docTitleNode)
 		{
 			var result = new Epub2NcxDocTitle();
@@ -156,7 +154,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 
 			return result;
 		}
-
 
 		private static Epub2NcxDocAuthor ReadNavigationDocAuthor(XElement docAuthorNode)
 		{
@@ -172,7 +169,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			return result;
 		}
 
-
 		private static Epub2NcxNavigationMap ReadNavigationMap(XElement navigationMapNode)
 		{
 			var result = new Epub2NcxNavigationMap();
@@ -181,7 +177,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 				if (navigationPointNode.CompareNameTo("navPoint"))
 				{
 					var navigationPoint = ReadNavigationPoint(navigationPointNode);
-					if (null != navigationPoint)
+					if (navigationPoint != null)
 					{
 						result.Add(navigationPoint);
 					}
@@ -190,7 +186,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 
 			return result;
 		}
-
 
 		private static Epub2NcxNavigationPoint ReadNavigationPoint(XElement navigationPointNode)
 		{
@@ -233,7 +228,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 						break;
 					case "navpoint":
 						var childNavigationPoint = ReadNavigationPoint(navigationPointChildNode);
-						if (null != childNavigationPoint)
+						if (childNavigationPoint != null)
 						{
 							result.ChildNavigationPoints.Add(childNavigationPoint);
 						}
@@ -242,7 +237,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 				}
 			}
 
-			if (!result.NavigationLabels.Any())
+			if (result.NavigationLabels.Count == 0)
 			{
 				throw new Exception($"EPUB parsing error: navigation point {result.Id} should contain at least one navigation label.");
 			}
@@ -259,7 +254,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			return result;
 		}
 
-
 		private static Epub2NcxNavigationLabel ReadNavigationLabel(XElement navigationLabelNode)
 		{
 			var result = new Epub2NcxNavigationLabel();
@@ -272,7 +266,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			result.Text = navigationLabelTextNode.Value;
 			return result;
 		}
-
 
 		private static Epub2NcxContent ReadNavigationContent(XElement navigationContentNode)
 		{
@@ -299,7 +292,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			return result;
 		}
 
-
 		private static Epub2NcxPageList ReadNavigationPageList(XElement navigationPageListNode)
 		{
 			var result = new Epub2NcxPageList();
@@ -314,7 +306,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 
 			return result;
 		}
-
 
 		private static Epub2NcxPageTarget ReadNavigationPageTarget(XElement navigationPageTargetNode)
 		{
@@ -331,15 +322,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 						result.Value = attributeValue;
 						break;
 					case "type":
-						Epub2NcxPageTargetType type;
-						if (Enum.TryParse(attributeValue, true, out type))
-						{
-							result.Type = type;
-						}
-						else
-						{
-							result.Type = Epub2NcxPageTargetType.Unknown;
-						}
+						result.Type = Enum.TryParse(attributeValue, true, out Epub2NcxPageTargetType type) ? type : Epub2NcxPageTargetType.Unknown;
 
 						break;
 					case "class":
@@ -372,14 +355,13 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 				}
 			}
 
-			if (!result.NavigationLabels.Any())
+			if (result.NavigationLabels.Count == 0)
 			{
 				throw new Exception("Incorrect EPUB navigation page target: at least one navLabel element is required.");
 			}
 
 			return result;
 		}
-
 
 		private static Epub2NcxNavigationList ReadNavigationList(XElement navigationListNode)
 		{
@@ -413,14 +395,13 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 				}
 			}
 
-			if (!result.NavigationLabels.Any())
+			if (result.NavigationLabels.Count == 0)
 			{
 				throw new Exception("Incorrect EPUB navigation page target: at least one navLabel element is required.");
 			}
 
 			return result;
 		}
-
 
 		private static Epub2NcxNavigationTarget ReadNavigationTarget(XElement navigationTargetNode)
 		{
@@ -465,7 +446,7 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 				}
 			}
 
-			if (!result.NavigationLabels.Any())
+			if (result.NavigationLabels.Count == 0)
 			{
 				throw new Exception("Incorrect EPUB navigation target: at least one navLabel element is required.");
 			}

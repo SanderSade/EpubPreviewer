@@ -42,7 +42,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			return result;
 		}
 
-
 		private static EpubContentType GetContentTypeByContentMimeType(string contentMimeType)
 		{
 			switch (contentMimeType.ToLowerInvariant())

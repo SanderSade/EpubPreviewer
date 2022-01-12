@@ -79,7 +79,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			return result;
 		}
 
-
 		private static EpubMetadata ReadMetadata(XElement metadataNode, EpubVersion epubVersion)
 		{
 			var result = new EpubMetadata
@@ -174,7 +173,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			return result;
 		}
 
-
 		private static EpubMetadataCreator ReadMetadataCreator(XElement metadataCreatorNode)
 		{
 			var result = new EpubMetadataCreator();
@@ -195,7 +193,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			result.Creator = metadataCreatorNode.Value;
 			return result;
 		}
-
 
 		private static EpubMetadataContributor ReadMetadataContributor(XElement metadataContributorNode)
 		{
@@ -218,7 +215,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			return result;
 		}
 
-
 		private static EpubMetadataDate ReadMetadataDate(XElement metadataDateNode)
 		{
 			var result = new EpubMetadataDate();
@@ -231,7 +227,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			result.Date = metadataDateNode.Value;
 			return result;
 		}
-
 
 		private static EpubMetadataIdentifier ReadMetadataIdentifier(XElement metadataIdentifierNode)
 		{
@@ -254,7 +249,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			return result;
 		}
 
-
 		private static EpubMetadataMeta ReadMetadataMetaVersion2(XElement metadataMetaNode)
 		{
 			var result = new EpubMetadataMeta();
@@ -274,7 +268,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 
 			return result;
 		}
-
 
 		private static EpubMetadataMeta ReadMetadataMetaVersion3(XElement metadataMetaNode)
 		{
@@ -302,7 +295,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			result.Content = metadataMetaNode.Value;
 			return result;
 		}
-
 
 		private static EpubManifest ReadManifest(XElement manifestNode)
 		{
@@ -366,7 +358,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 			return result;
 		}
 
-
 		private static List<ManifestProperty> ReadManifestProperties(string propertiesAttributeValue)
 		{
 			var result = new List<ManifestProperty>();
@@ -377,7 +368,6 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 
 			return result;
 		}
-
 
 		private static EpubSpine ReadSpine(XElement spineNode, EpubVersion epubVersion)
 		{
@@ -434,14 +424,13 @@ namespace SanderSade.EpubPreviewer.VersOne.Epub.Readers
 					}
 
 					var linearAttribute = spineItemNode.Attribute("linear");
-					spineItemRef.IsLinear = linearAttribute == null || !linearAttribute.CompareValueTo("no");
+					spineItemRef.IsLinear = linearAttribute?.CompareValueTo("no") != true;
 					result.Add(spineItemRef);
 				}
 			}
 
 			return result;
 		}
-
 
 		private static EpubGuide ReadGuide(XElement guideNode)
 		{
