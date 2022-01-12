@@ -35,11 +35,11 @@ You can see the current HTML and CSS at <https://github.com/SanderSade/EpubPrevi
 
 ## Screenshots (click to enlarge)
 
-Main window:
+Main window:  
 ![Main window](https://user-images.githubusercontent.com/18664267/149160121-7895f3f2-3e77-4f3e-9ac7-7787d710f018.png)
 
 
-Preview of a book:
+Preview of a book:  
 ![Preview](https://user-images.githubusercontent.com/18664267/149161091-84a25416-237d-4ec6-808d-ab145cf12fe5.png)
 
 
